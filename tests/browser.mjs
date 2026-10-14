@@ -101,7 +101,7 @@ try {
   }
   assert.equal(await page.locator('.motion-control').count(), 0);
 
-  for (const route of ['/politica-de-privacidad/', '/politica-de-cookies/']) {
+  for (const route of ['/privacy/', '/cookies/']) {
     assert.equal((await page.goto(`${base}${route}`)).status(), 200);
     assert.equal(await page.locator('h1').count(), 1);
     assert.ok(await page.locator('main').innerText());

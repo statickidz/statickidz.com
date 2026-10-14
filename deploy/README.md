@@ -16,7 +16,9 @@ The site assumes its existing custom domain. Serving it under `/statickidz.com/`
 
 ## Optional legacy redirects
 
-`cloudflare-redirects.csv` supplies exact 301 mappings for old about/contact and sitemap paths. Import it into Cloudflare Bulk Redirects and enable the rules if Cloudflare serves this domain. Committing the file does not activate redirects; GitHub Pages does not consume it. There is no wildcard redirect to the homepage.
+`cloudflare-redirects.csv` supplies exact 301 mappings for old about/contact, sitemap, and policy paths. The live homepage's legal links were checked on 2026-10-14: `/politica-de-privacidad/` now maps to `/privacy/`, and `/politica-de-cookies/` maps to `/cookies/`. Both apex and www hosts and both trailing-slash forms are covered. Scheme-less sources match HTTP and HTTPS; policy redirects preserve query strings and do not match subpaths.
+
+Deploy the English routes first, then import the CSV into Cloudflare Bulk Redirects and enable a rule for that list. Ensure both hostnames use proxied Cloudflare DNS so requests reach the rule. Committing the file does not activate redirects; GitHub Pages does not consume it. There is no wildcard redirect to the homepage.
 
 ## Local checks
 

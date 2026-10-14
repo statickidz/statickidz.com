@@ -23,7 +23,7 @@ Visitors read the introduction, career journey, certifications, and community no
 - Preserve the confirmed scope: personal introduction, career, credentials, community, and GitHub/LinkedIn contact.
 - No blog, project gallery, backend, or analytics.
 - Content and navigation remain usable without JavaScript.
-- English content, with existing legal URL paths preserved.
+- English content and policy URLs (`/privacy/` and `/cookies/`); preserve old Spanish links through exact Cloudflare redirects.
 - Astro generates static files for GitHub Pages at the custom domain statickidz.com. Only `dist/` is published.
 - Keep the existing CV PDF URLs and the website's general privacy and cookie pages.
 - GitHub Pages preparation includes Playwright accessibility checks before deployment from `main`.

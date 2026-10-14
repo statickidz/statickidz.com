@@ -110,6 +110,12 @@ test('retired routes are missing and old profile links redirect only to the corr
     } else if (from.pathname.startsWith('/contactar')) {
       assert.equal(to.pathname + to.hash, '/#contact');
       assert.equal(query, 'TRUE');
+    } else if (from.pathname.replace(/\/$/, '') === '/politica-de-privacidad') {
+      assert.equal(to.pathname, '/privacy/');
+      assert.equal(query, 'TRUE');
+    } else if (from.pathname.replace(/\/$/, '') === '/politica-de-cookies') {
+      assert.equal(to.pathname, '/cookies/');
+      assert.equal(query, 'TRUE');
     } else {
       assert.ok(['/sitemap_index.xml', '/page-sitemap.xml'].includes(from.pathname));
       assert.equal(to.pathname, '/sitemap.xml');
@@ -139,9 +145,28 @@ test('the source tree no longer contains the legacy WordPress installation or ex
 });
 
 test('site privacy and cookies describe the new static site', () => {
-  assert.match(read('politica-de-privacidad/index.html'), /info@statickidz\.com/);
-  assert.match(read('politica-de-cookies/index.html'), /does not use cookies/i);
-  assert.doesNotMatch(read('politica-de-privacidad/index.html'), /Hubspot|Mailchimp|Smartlook|Gravatar/i);
+  assert.match(read('privacy/index.html'), /info@statickidz\.com/);
+  assert.match(read('cookies/index.html'), /does not use cookies/i);
+  assert.doesNotMatch(read('privacy/index.html'), /Hubspot|Mailchimp|Smartlook|Gravatar/i);
+});
+
+test('English policy URLs are canonical, linked and mapped from legacy URLs', () => {
+  const sitemap = read('sitemap.xml');
+  for (const path of ['privacy', 'cookies']) {
+    assert.match(sitemap, new RegExp(`<loc>https://statickidz.com/${path}/</loc>`));
+    assert.match(read(`${path}/index.html`), new RegExp(`rel="canonical" href="https://statickidz.com/${path}/"`));
+    assert.match(read('index.html'), new RegExp(`href="/${path}/"`));
+  }
+  assert.match(read('cookies/index.html'), /href="\/privacy\/"/);
+  const redirects = readFileSync(new URL('../deploy/cloudflare-redirects.csv', import.meta.url), 'utf8');
+  for (const [oldPath, newPath] of [['politica-de-privacidad', 'privacy'], ['politica-de-cookies', 'cookies']]) {
+    assert.ok(!existsSync(new URL(`${oldPath}/index.html`, output)));
+    for (const host of ['statickidz.com', 'www.statickidz.com']) {
+      for (const slash of ['', '/']) {
+        assert.ok(redirects.split(/\r?\n/).includes(`${host}/${oldPath}${slash},https://statickidz.com/${newPath}/,301,TRUE,FALSE,FALSE,FALSE`));
+      }
+    }
+  }
 });
 
 test('the grimoire provides a personal heading and an accessible decorative seal', () => {

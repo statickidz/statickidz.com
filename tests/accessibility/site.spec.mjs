@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/politica-de-privacidad/', '/politica-de-cookies/', '/does-not-exist/'];
+const routes = ['/', '/privacy/', '/cookies/', '/does-not-exist/'];
 
 async function audit(page, testInfo, name) {
   const results = await new AxeBuilder({ page })
