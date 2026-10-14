@@ -1,0 +1,100 @@
+---
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '../styles/global.css';
+import TerminalNav from '../components/TerminalNav.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Adrián Barrio Andrés (statickidz) — Site Reliability Engineer',
+  description = 'Senior Site Reliability Engineer at Oracle. Explore Adrián Barrio Andrés’s journey through software, cloud reliability, AI-assisted engineering and community.',
+  lang = 'en',
+  noindex = false,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL('/social-card.png', Astro.site);
+const profile = Astro.url.pathname === '/' ? {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://statickidz.com/#website',
+      url: 'https://statickidz.com/',
+      name: 'statickidz',
+      alternateName: 'Adrián Barrio Andrés',
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': 'https://statickidz.com/#profile',
+      url: 'https://statickidz.com/',
+      name: title,
+      description,
+      inLanguage: 'en',
+      isPartOf: { '@id': 'https://statickidz.com/#website' },
+      mainEntity: {
+        '@type': 'Person',
+        '@id': 'https://statickidz.com/#person',
+        name: 'Adrián Barrio Andrés',
+        alternateName: 'statickidz',
+        url: 'https://statickidz.com/',
+        jobTitle: 'Senior Site Reliability Engineer',
+        worksFor: { '@type': 'Organization', name: 'Oracle' },
+        sameAs: ['https://github.com/statickidz', 'https://www.linkedin.com/in/adrianbarrio'],
+      },
+    },
+  ],
+} : null;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080a08" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="statickidz" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Adrián Barrio Andrés — statickidz. Senior Site Reliability Engineer at Oracle." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content="Adrián Barrio Andrés — statickidz. Senior Site Reliability Engineer at Oracle." />
+    {profile && <script type="application/ld+json" set:html={JSON.stringify(profile).replace(/</g, '\\u003c')} />}
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="site-shell">
+      <TerminalNav />
+      <slot />
+      <footer class="site-footer">
+        <a class="footer-domain" href="/">statickidz.com</a>
+        <nav aria-label="Legal information">
+          <a href="/politica-de-privacidad/">Privacy</a>
+          <a href="/politica-de-cookies/">Cookies</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>

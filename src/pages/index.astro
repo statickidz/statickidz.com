@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Seal from '../components/Seal.astro';
+---
+
+<Layout>
+  <main id="main" class="home grimoire">
+    <section id="about" class="introduction" aria-labelledby="name">
+      <div class="intro-copy">
+        <div class="hero-heading">
+          <h1 id="name" class="identity">Adrián Barrio Andrés</h1>
+          <p class="role">Senior Site Reliability Engineer at Oracle</p>
+        </div>
+        <div class="bio">
+          <p>My journey has taken me from web and mobile development to engineering leadership, cloud reliability, and AI-assisted engineering.</p>
+          <p>I like understanding how things work, learning from others, and sharing what I learn.</p>
+        </div>
+        <a class="intro-contact" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
+      </div>
+      <Seal />
+    </section>
+
+    <section id="journey" class="journal" aria-labelledby="journey-title">
+      <h2 id="journey-title"><span class="path-root" aria-hidden="true">[ </span>journey<span class="path-root" aria-hidden="true"> ]</span></h2>
+      <ol class="chapters">
+        <li class="chapter">
+          <h3>Systems &amp; curiosity</h3>
+          <p>Hands-on beginnings: repairing computers, installing software, and learning how systems fit together.</p>
+        </li>
+        <li class="chapter">
+          <h3>Web &amp; mobile</h3>
+          <p>Building for the web and mobile, working across interfaces, applications, and the systems behind them.</p>
+        </li>
+        <li class="chapter">
+          <h3>Engineering leadership</h3>
+          <p>Moving into engineering management, bringing software development and people management together.</p>
+        </li>
+        <li class="chapter">
+          <h3>Cloud reliability</h3>
+          <p>Now at Oracle, keeping Oracle Health’s cloud infrastructure reliable and scalable.</p>
+        </li>
+        <li class="chapter">
+          <h3>AI-assisted engineering</h3>
+          <p>Using AI-assisted tools to explore ideas and support software work, with a growing focus on agents, MCP, and open tooling.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="certifications" class="certifications" aria-labelledby="certifications-title">
+      <h2 id="certifications-title"><span class="path-root" aria-hidden="true">[ </span>certifications<span class="path-root" aria-hidden="true"> ]</span></h2>
+      <ul class="credential-list">
+        <li class="credential">
+          <div><h3>OCI AI Foundations Associate</h3><p>Oracle</p></div>
+          <time datetime="2026-04">Apr 2026</time>
+        </li>
+        <li class="credential">
+          <div><h3>OCI Foundations Associate</h3><p>Oracle</p></div>
+          <time datetime="2025-03">Mar 2025</time>
+        </li>
+        <li class="credential">
+          <div><h3>Kubernetes Advanced Ops</h3><p>Government of La Rioja</p></div>
+          <time datetime="2023-07">Jul 2023</time>
+        </li>
+      </ul>
+      <a class="credential-source" href="https://www.linkedin.com/in/adrianbarrio" target="_blank" rel="noopener noreferrer">See credentials on LinkedIn <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <section id="community" class="community" aria-labelledby="community-title">
+      <h2 id="community-title"><span class="path-root" aria-hidden="true">[ </span>community<span class="path-root" aria-hidden="true"> ]</span></h2>
+      <div class="community-notes">
+        <article class="community-note">
+          <h3><a href="https://cloudnativerioja.com/" target="_blank" rel="noopener noreferrer">Cloud Native Rioja <span aria-hidden="true">↗</span></a></h3>
+          <p>Co-organizer, bringing people together to learn and share practical knowledge about Kubernetes, infrastructure, and the cloud-native ecosystem.</p>
+          <p>Part of the CNCF community in La Rioja, the group connects developers and people working with infrastructure around open-source cloud-native technologies. Containers, orchestration, microservices, and automation provide common ground for sharing what we learn.</p>
+          <p>The community extends beyond events: its GitHub, Telegram, and other channels give people ways to stay connected, follow discussions, and discover what is happening locally. Visit the group’s website to find those channels and join in.</p>
+        </article>
+        <article class="community-note">
+          <h3><a href="https://agenticrioja.com/" target="_blank" rel="noopener noreferrer">Agentic Rioja <span aria-hidden="true">↗</span></a></h3>
+          <p>A local community for agentic AI and open standards, including Model Context Protocol (MCP) and AGENTS.md. I help bring builders together in Logroño, La Rioja, as a 2026 AAIF Community Organizer.</p>
+          <p>The focus is how agents fit into real engineering work: connecting them to tools and context through MCP, giving them clear project guidance with AGENTS.md, and understanding where AI assistance is useful. These are also themes in my own approach to AI-assisted engineering.</p>
+          <p>Agentic Rioja is a place to connect around these questions and share what we are learning. Whether you are exploring your first agent workflow or already building with these tools, the community website is the starting point for getting involved.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title"><span class="path-root" aria-hidden="true">[ </span>contact<span class="path-root" aria-hidden="true"> ]</span></h2>
+      <p class="contact-intro">Have something interesting in mind? Get in touch.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="https://github.com/statickidz" target="_blank" rel="noopener noreferrer">
+          <span class="link-label">github</span>
+          <span class="link-destination">/statickidz</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" /></svg>
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/adrianbarrio" target="_blank" rel="noopener noreferrer">
+          <span class="link-label">linkedin</span>
+          <span class="link-destination">/in/adrianbarrio</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" /></svg>
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>

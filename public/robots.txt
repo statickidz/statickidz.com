@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://statickidz.com/sitemap.xml

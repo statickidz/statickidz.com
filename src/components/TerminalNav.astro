@@ -1,0 +1,118 @@
+---
+const commands = [
+  ['about', 'about', 'Who I am'],
+  ['journey', 'journey', 'My IT journey'],
+  ['certs', 'certifications', 'Certifications'],
+  ['community', 'community', 'People & communities'],
+  ['contact', 'contact', 'GitHub & LinkedIn'],
+];
+---
+<header class="site-header">
+  <a class="wordmark" href="/" aria-label="statickidz, home"><span class="path-root">~/</span>statickidz<span class="path-root">/<span data-current-path></span></span></a>
+  <details class="terminal-menu">
+    <summary aria-label="Open navigation terminal"><span aria-hidden="true">&gt; </span><span data-prompt>help</span></summary>
+    <div class="terminal-panel">
+      <p class="terminal-caption">Available commands</p>
+      <nav class="header-nav" aria-label="Main navigation">
+        {commands.map(([command, section, description]) => <a class="nav-link" href={`/#${section}`} data-command={command}><span>{command}</span><span>{description}</span></a>)}
+      </nav>
+      <form class="terminal-input" hidden autocomplete="off">
+        <label for="command"><span aria-hidden="true">&gt;</span><span class="sr-only">Navigation command</span></label>
+        <input id="command" name="command" type="text" maxlength="64" placeholder="Type a command" spellcheck="false" autocapitalize="none" aria-describedby="command-feedback" />
+        <button type="submit">Run</button>
+      </form>
+      <p id="command-feedback" class="terminal-feedback" role="status"></p>
+    </div>
+  </details>
+</header>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('.terminal-menu')!;
+  const summary = menu.querySelector('summary')!;
+  const form = menu.querySelector<HTMLFormElement>('form')!;
+  const input = form.querySelector('input')!;
+  const feedback = menu.querySelector<HTMLElement>('.terminal-feedback')!;
+  const links = [...menu.querySelectorAll<HTMLAnchorElement>('[data-command]')];
+  const path = document.querySelector<HTMLElement>('[data-current-path]')!;
+  const prompt = menu.querySelector<HTMLElement>('[data-prompt]')!;
+  form.hidden = false;
+  let selectedLink = links.find((link) => new URL(link.href).hash === window.location.hash);
+
+  function activate(link: HTMLAnchorElement) {
+    const command = link.dataset.command!;
+    path.textContent = `${command}/`;
+    prompt.textContent = command;
+    for (const item of links) {
+      if (item === link) item.setAttribute('aria-current', 'location');
+      else item.removeAttribute('aria-current');
+    }
+  }
+  function close() {
+    menu.open = false;
+    input.value = '';
+    feedback.textContent = '';
+  }
+  for (const link of links) link.addEventListener('click', () => {
+    selectedLink = link;
+    activate(link);
+    close();
+    summary.focus({ preventScroll: true });
+  });
+  menu.addEventListener('toggle', () => {
+    summary.setAttribute('aria-expanded', String(menu.open));
+    if (menu.open) input.focus({ preventScroll: true });
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const command = input.value.trim().toLowerCase();
+    if (command === 'help') {
+      feedback.textContent = 'Choose a command above or type its name and press Enter.';
+      input.value = '';
+      return;
+    }
+    const link = links.find((item) => item.dataset.command === command);
+    if (link) link.click();
+    else feedback.textContent = command ? `Unknown command: ${command}. Type help for available commands.` : 'Type a command, or choose one above.';
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu.open) {
+      close();
+      summary.focus({ preventScroll: true });
+    }
+  });
+  document.addEventListener('click', (event) => {
+    if (menu.open && !menu.contains(event.target as Node)) close();
+  });
+  const sections = links.map((link) => ({ link, element: document.querySelector<HTMLElement>(new URL(link.href).hash) })).filter((entry) => entry.element);
+  if (sections.length) {
+    let scheduled = false;
+    function updatePath() {
+      scheduled = false;
+      if (selectedLink) { activate(selectedLink); return; }
+      const edge = Math.max(document.querySelector('.site-header')!.getBoundingClientRect().bottom + 80, parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 36);
+      let active = sections[0];
+      for (const section of sections) if (section.element!.getBoundingClientRect().top <= edge) active = section;
+      if (window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) active = sections[sections.length - 1];
+      activate(active.link);
+    }
+    window.addEventListener('scroll', () => {
+      if (!scheduled) { scheduled = true; requestAnimationFrame(updatePath); }
+    }, { passive: true });
+    window.addEventListener('resize', updatePath);
+    window.addEventListener('hashchange', () => {
+      selectedLink = links.find((link) => new URL(link.href).hash === window.location.hash);
+      updatePath();
+    });
+    const resumeScrollTracking = () => { selectedLink = undefined; requestAnimationFrame(updatePath); };
+    window.addEventListener('wheel', resumeScrollTracking, { passive: true });
+    window.addEventListener('touchmove', resumeScrollTracking, { passive: true });
+    document.addEventListener('keydown', (event) => {
+      if (!(event.target instanceof HTMLInputElement) && ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) resumeScrollTracking();
+    });
+    // Scrollbar dragging is also an intentional navigation action.
+    window.addEventListener('pointerdown', (event) => {
+      if (event.clientX >= document.documentElement.clientWidth) resumeScrollTracking();
+    });
+    updatePath();
+  }
+</script>

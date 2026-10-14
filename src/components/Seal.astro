@@ -1,0 +1,47 @@
+<div class="seal-stage">
+ <div class="seal-art" aria-hidden="true">
+  <svg class="sigil" viewBox="0 0 360 360" fill="none">
+    <g class="seal-orbit">
+      <path d="M180 22a158 158 0 0 1 158 158M180 338A158 158 0 0 1 22 180" />
+      <path d="M22 180h12m292 0h12M180 22v12m0 292v12" />
+      <circle cx="180" cy="22" r="3" />
+      <circle cx="180" cy="338" r="3" />
+      <path d="m68 68 8 8m208 208 8 8m0-224-8 8M76 284l-8 8" />
+    </g>
+    <circle class="seal-circle" cx="180" cy="180" r="126" />
+    <circle class="seal-echo" cx="180" cy="180" r="90" />
+    <path class="seal-diamond" d="m180 60 68 120-68 120-68-120Z" />
+    <path class="seal-axis" d="M180 42v58m0 160v58M42 180h58m160 0h58" />
+    <g class="sigil-core">
+      <path d="M180 110v140M151 133h58l-58 94h58M139 162l-18 18 18 18m82-36 18 18-18 18" />
+      <circle cx="180" cy="180" r="7" />
+      <path d="m169 112 11-11 11 11m-22 136 11 11 11-11" />
+    </g>
+    <g class="seal-satellites">
+      <circle class="seal-point" cx="54" cy="180" r="2" />
+      <circle class="seal-point" cx="306" cy="180" r="2" />
+      <path d="M58 150a126 126 0 0 1 9-26m135 178a126 126 0 0 1-27 4" />
+    </g>
+  </svg>
+  <span class="seal-notation">[ &nbsp; / &nbsp; : &nbsp; / &nbsp; ]</span>
+ </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.seal-stage').forEach((stage) => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let inView = false;
+
+    const update = () => {
+      stage.dataset.motion = inView && !document.hidden && !preference.matches ? 'running' : 'paused';
+    };
+
+    preference.addEventListener('change', update);
+    document.addEventListener('visibilitychange', update);
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      update();
+    }, { threshold: 0.1 }).observe(stage);
+    update();
+  });
+</script>
